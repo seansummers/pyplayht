@@ -1,0 +1,40 @@
+[project]
+name = "pyplayht"
+version = "0.1.0"
+description = "Unofficial optimized client for PlayHT API"
+authors = [
+    { name = "Sean Summers", email = "seansummers@gmail.com" }
+]
+dependencies = [
+    "grpcio-tools>=1.60.1",
+    "python-dotenv>=1.0.1",
+    "grpcio>=1.60.1",
+    "eliot>=1.15.0",
+    "picologging>=0.9.3",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[project.scripts]
+hello = "pyplayht:__main__"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "black>=24.1.1",
+    "isort>=5.13.2",
+    "eliot-tree>=21.0.0",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pyplayht"]
+
+
+# python -m grpc_tools.protoc -I. --python_out=. --pyi_out=. --grpc_python_out=. api.proto
