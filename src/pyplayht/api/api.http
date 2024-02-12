@@ -1,0 +1,91 @@
+###
+
+
+POST /api/v1/convert HTTP/1.1
+Host: play.ht
+Authorization: YOUR_SECRET_KEY_HERE
+X-User-Id: YOUR_USER_ID_HERE
+
+###
+
+POST https://play.ht/api/v2/tts
+Authorization: YOUR_SECRET_KEY_HERE
+X-User-Id: YOUR_USER_ID_HERE
+Content-Type: application/json
+Accept: text/event-stream
+
+{ "text":"", "voice":"", "voice_engine": "PlayHT2.0"}
+
+#eventually...
+#>
+#event: completed
+#data: {"id":"1i01A5fd8O35iLkhuJ","progress":1,"stage":"complete","url":"https://peregrine-results.s3.amazonaws.com/pigeon/IZ5jJmV1ecnZaVuoIK_0.mp3","duration":2.4107,"size":49965}
+
+###
+
+POST https://api.play.ht/api/v2/tts
+Authorization: YOUR_SECRET_KEY_HERE
+X-User-Id: YOUR_USER_ID_HERE
+Content-Type: application/json
+Accept: application/json
+Accept: text/event-stream
+
+Text to convert to speech.
+
+#>
+# 201 Location: /api/v2/tts/{id}
+# body is the job data
+
+###
+GET https://api.play.ht/api/v2/tts/{id}
+
+# application/json or */* is job:status,progress,etc
+# text/event-stream is updates on progress
+# audio/mpeg is the mp3 format bytes or 406 if not mp3
+
+
+###
+GET https://api.play.ht/api/v2/voices
+
+
+###
+POST https://api.play.ht/api/v2/cloned-voices/instant
+Content-Type: multipart/form-data
+Accept: application/json
+
+# 2 seconds to 1 hour, 5kb to 50MB
+
+###
+GET https://api.play.ht/api/v2/cloned-voices
+Accept: application/json
+
+###
+DELETE https://api.play.ht/api/v2/cloned-voices/
+Accept: application/json
+Content-Type: application/json
+
+{"voice_id": "s3://..."}
+
+
+###
+POST https://api.play.ht/api/v2/transcriptions
+Accept: application/json
+Content-Type: application/json
+
+{
+  "tts_job_id": "",
+  "format": "SRT|VRT|JSON",
+  "timestamp_level": "WORD|SENTENCE",
+  "webhook_url": ""
+}
+
+#>
+# 201 Location: /api/v2/transcriptions/{
+id
+}
+
+
+###
+GET https://api.play.ht/api/v2/transcriptions/{id}
+Accept: application/json
+
