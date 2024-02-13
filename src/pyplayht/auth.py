@@ -1,5 +1,7 @@
 """Authentication for Play.HT API"""
 
+from functools import cached_property
+
 from .logging_config import log_call, logging
 
 logger = logging.getLogger(__name__)
@@ -92,10 +94,17 @@ class Lease:
 
         self.meta = json.loads(meta)
 
-    @property
+    @cached_property
     @log_call
     def grpc_addr(self) -> str:
+        if self.is_premium:
+            return self.meta.get("premium_inference_address")
         return self.meta.get("inference_address")
+
+    @cached_property
+    @log_call
+    def is_premium(self) -> bool:
+        return "premium_inference_address" in self.meta
 
     @log_call
     def is_expired(self) -> bool:

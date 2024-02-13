@@ -1,48 +1,79 @@
-from enum import StrEnum
+from enum import StrEnum, auto, unique
 from typing import Optional
 
 headers = {"Accept": "application/json", "Content-Type": "application/json"}
 
+ResponseFormat = {
+    "audio-mpeg",
+    "event-stream",
+}
+VoiceEngine = {
+    "PlayHT1.0",
+    "PlayHT2.0",
+}
 
-class ResponseFormat(StrEnum):
-    "audio-mpeg"
-    "event-stream"
 
-
+@unique
 class Quality(StrEnum):
-    draft
-    low
-    medium
-    high
-    premium
+    draft = auto()
+    low = auto()
+    medium = auto()
+    high = auto()
+    premium = auto()
 
 
+@unique
 class OutputFormat(StrEnum):
-    mp3
-    wav
-    ogg
-    flac
-    mulaw
+    mp3 = auto()
+    wav = auto()
+    ogg = auto()
+    flac = auto()
+    mulaw = auto()
 
 
-class VoiceEngine(StrEnum):
-    "PlayHT1.0"
-    "PlayHT2.0"
-
-
+@unique
 class Emotion(StrEnum):
-    female_happy
-    female_sad
-    female_angry
-    female_fearful
-    female_disgust
-    female_surprised
-    male_happy
-    male_sad
-    male_angry
-    male_fearful
-    male_disgust
-    male_surprised
+    female_happy = auto()
+    female_sad = auto()
+    female_angry = auto()
+    female_fearful = auto()
+    female_disgust = auto()
+    female_surprised = auto()
+    male_happy = auto()
+    male_sad = auto()
+    male_angry = auto()
+    male_fearful = auto()
+    male_disgust = auto()
+    male_surprised = auto()
+
+
+@unique
+class GenerateStatus(StrEnum):
+    GENERATING = auto()
+    COMPLETED = auto()
+    ERROR = auto()
+
+
+class TtsStream:
+    """
+    Error if not mp3
+    """
+
+    request = "POST"
+    uri = "https://api.play.ht/api/v2/tts/stream"
+    headers = {"Accept": "audio/mpeg", "Content-Type": "application/json"}
+    text: str
+    voice: str
+    quality: Optional[Quality]
+    output_format: Optional[OutputFormat]  # error if not mp3
+    speed: Optional[float]  # 0 < _ <= 5.0
+    sample_rate: Optional[int]  # 8000 <= _ <= 48000
+    seed: Optional[int]  #  0 <= _
+    temperature: Optional[float]  # 0 <= _ <= 2
+    voice_engine: Optional[VoiceEngine]  # default PlayHT2.0
+    emotion: Optional[Emotion]
+    voice_guidance: Optional[int]  # 1 <= _ <= 6 for uniqueness
+    style_guidance: Optional[int]  # 1 <= _ <= 30 for emotiveness
 
 
 class GenerateAudioFromText:

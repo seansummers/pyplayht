@@ -1,5 +1,7 @@
 """HTTP Client for play.ht REST API"""
 
+__version__ = "0.1.0"
+
 
 class ListPlayHtVoices:
     """ """
